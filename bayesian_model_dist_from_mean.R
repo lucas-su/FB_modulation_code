@@ -11,9 +11,10 @@ library(bayr)
 
 ##
 
-dist_from_mean <- read_csv("C:\\Users\\admin\\Documents\\MATLAB\\feedback_modulation\\dist_from_mean.csv", 
+dist_from_mean <- read_csv("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\dist_from_mean.csv", 
                            col_names = c('part','dist','cond'))
-
+labels_cond=c("raw", "average", "low pass", "scale")
+labels_part <- as.character(c(3:21))
 
 ## 
 lm_P_C <-  stan_lmer(dist ~ 1 + (1|part) + (1|cond),
@@ -23,18 +24,24 @@ coefs_P_C <- coef(posterior(lm_P_C), interval=0.9)
 
 coefs_P_C
 
-coefs_norm_P_C_part <- slice(dplyr::select(coefs_P_C, center, lower, upper), 2:20)+ 2.037 #(dplyr::select(coefs,center),1)
-coefs_norm_P_C_cond <- slice(dplyr::select(coefs_P_C, center, lower, upper), 21:24)+ 2.037 #(dplyr::select(coefs,center),1)
+coefs_norm_P_C_part <- slice(dplyr::select(coefs_P_C, center, lower, upper), 2:20)+ 2.045 #(dplyr::select(coefs,center),1)
+coefs_norm_P_C_cond <- slice(dplyr::select(coefs_P_C, center, lower, upper), 21:24)+ 2.045 #(dplyr::select(coefs,center),1)
 
-ggplot(coefs_norm_P_C_part, aes(1:19, center)) +        # ggplot2 plot with 90% credibility limites
-  geom_point() +
-  scale_x_discrete("Condition",labels=c(3:21))+
-  scale_y_continuous("Deviation from mean")+  
-  geom_errorbar(aes(ymin = lower, ymax = upper))
+coefs_norm_P_C_cond$labels_ = c("raw", "average", "low pass", "scale")
+coefs_norm_P_C_part$labels_ <- as.character(c(3:21))
 
-ggplot(coefs_norm_P_C_cond, aes(1:4, center)) +        # ggplot2 plot with 90% credibility limites
+
+
+ggplot(coefs_norm_P_C_part, aes(labels_, center)) +        # ggplot2 plot with 90% credibility limits
   geom_point() +
-  scale_x_discrete("Condition",labels=c('0'="raw", '1'="average", '2'="low pass", '3'="scale"))+
+  geom_errorbar(aes(ymin = lower, ymax = upper))+
+  scale_x_discrete("Participant", limits=coefs_norm_P_C_part$labels_)+
+  scale_y_continuous("Deviation from mean", breaks=c(1:6))
+
+
+ggplot(coefs_norm_P_C_cond, aes(labels_, center)) +        # ggplot2 plot with 90% credibility limits
+  geom_point() +
+  scale_x_discrete("Condition", limits = coefs_norm_P_C_cond$labels_)+
   scale_y_continuous("Deviation from mean")+  
   geom_errorbar(aes(ymin = lower, ymax = upper))
 
@@ -50,10 +57,11 @@ coefs_C
 
 coefs_norm_C_cond <- slice(dplyr::select(coefs_C, center, lower, upper), 2:5)+ 1.98 #(dplyr::select(coefs,center),1)
 
+coefs_norm_C_cond$labels_ = c("raw", "average", "low pass", "scale")
 
-ggplot(coefs_norm_C_cond, aes(c('0','1','2','3'), center)) +        # ggplot2 plot with confidence intervals
+ggplot(coefs_norm_C_cond, aes(labels_, center)) +        # ggplot2 plot with confidence intervals
   geom_point() +
-  scale_x_discrete("Condition",labels=c('0'="raw", '1'="average", '2'="low pass", '3'="scale"))+
+  scale_x_discrete("Condition",limits=coefs_norm_C_cond$labels_)+
   scale_y_continuous("Deviation from mean")+  
   geom_errorbar(aes(ymin = lower, ymax = upper))
 
@@ -65,7 +73,6 @@ dist_from_mean_outliers_removed <- subset(x= dist_from_mean,
                                           part != 9 &
                                             part != 14)
 
-
 m_P_C_No_out <-  stan_lmer(dist ~ 1 + (1|part) + (1|cond),
                     data = dist_from_mean_outliers_removed  )
 
@@ -74,19 +81,21 @@ coefs_P_C_No_out <- coef(posterior(m_P_C_No_out), interval=0.9)
 coefs_P_C_No_out
 
 coefs_norm_P_C_No_out_part <- slice(dplyr::select(coefs_P_C_No_out, center, lower, upper), 2:18)+  1.7661906 #(dplyr::select(coefs,center),1)
+coefs_norm_P_C_No_out_part$labels_ = as.character(c(3,4,5,6,7,8,9,10,12,13,14,15,17,18,19,20,21))
 
-
-ggplot(coefs_norm_P_C_No_out_part, aes(1:17, center)) +        # ggplot2 plot with confidence intervals
+ggplot(coefs_norm_P_C_No_out_part, aes(labels_, center)) +        # ggplot2 plot with confidence intervals
   geom_point() +
-  scale_x_discrete("Condition",labels=cat(c(3:10),c(12:15),c(17:21)))+
+  scale_x_discrete("Condition",labels=coefs_norm_P_C_No_out_part$labels_)+
   scale_y_continuous("Deviation from mean")+  
   geom_errorbar(aes(ymin = lower, ymax = upper))
 
 
 coefs_norm_P_C_No_out_cond <- slice(dplyr::select(coefs_P_C_No_out, center, lower, upper), 19:22)+  1.7661906 #(dplyr::select(coefs,center),1)
 
-ggplot(coefs_norm_P_C_No_out_cond, aes(c('0','1','2','3'), center)) +        # ggplot2 plot with confidence intervals
+coefs_norm_P_C_No_out_cond$labels_=c("raw", "average", "low pass", "scale")
+
+ggplot(coefs_norm_P_C_No_out_cond, aes(labels_, center)) +        # ggplot2 plot with confidence intervals
   geom_point() +
-  scale_x_discrete("Condition",labels=c('0'="raw", '1'="average", '2'="low pass", '3'="scale"))+
+  scale_x_discrete("Condition",limits=coefs_norm_P_C_No_out_cond$labels_)+
   scale_y_continuous("Deviation from mean")+  
   geom_errorbar(aes(ymin = lower, ymax = upper))
