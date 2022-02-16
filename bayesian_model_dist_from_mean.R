@@ -37,14 +37,14 @@ ggplot(coefs_norm_P_C_part, aes(labels_, center)) +        # ggplot2 plot with 9
   geom_errorbar(aes(ymin = lower, ymax = upper))+
   scale_x_discrete("Participant", limits=coefs_norm_P_C_part$labels_)+
   scale_y_continuous("Deviation from mean", breaks=c(1:6))
-
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\dev_from_mean_P_C_part.pdf")
 
 ggplot(coefs_norm_P_C_cond, aes(labels_, center)) +        # ggplot2 plot with 90% credibility limits
   geom_point() +
   scale_x_discrete("Condition", limits = coefs_norm_P_C_cond$labels_)+
   scale_y_continuous("Deviation from mean")+  
   geom_errorbar(aes(ymin = lower, ymax = upper))
-
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\dev_from_mean_P_C_cond.pdf")
 
 ##
 
@@ -64,7 +64,7 @@ ggplot(coefs_norm_C_cond, aes(labels_, center)) +        # ggplot2 plot with con
   scale_x_discrete("Condition",limits=coefs_norm_C_cond$labels_)+
   scale_y_continuous("Deviation from mean")+  
   geom_errorbar(aes(ymin = lower, ymax = upper))
-
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\dev_from_mean_C_cond.pdf")
 
 
 ## without outliers (conclusions don't change)
@@ -88,7 +88,7 @@ ggplot(coefs_norm_P_C_No_out_part, aes(labels_, center)) +        # ggplot2 plot
   scale_x_discrete("Condition",labels=coefs_norm_P_C_No_out_part$labels_)+
   scale_y_continuous("Deviation from mean")+  
   geom_errorbar(aes(ymin = lower, ymax = upper))
-
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\dev_from_mean_P_C_No_out_part.pdf")
 
 coefs_norm_P_C_No_out_cond <- slice(dplyr::select(coefs_P_C_No_out, center, lower, upper), 19:22)+  1.7661906 #(dplyr::select(coefs,center),1)
 
@@ -99,3 +99,4 @@ ggplot(coefs_norm_P_C_No_out_cond, aes(labels_, center)) +        # ggplot2 plot
   scale_x_discrete("Condition",limits=coefs_norm_P_C_No_out_cond$labels_)+
   scale_y_continuous("Deviation from mean")+  
   geom_errorbar(aes(ymin = lower, ymax = upper))
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\P_C_No_out_cond.pdf")
