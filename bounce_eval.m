@@ -6,7 +6,7 @@ diff.raw = [];
 diff.av = [];
 diff.low = [];
 diff.sc = [];
-writematrix([],'dist_from_mean.csv') % remake empty csv file
+writematrix([],'dist_from_mean_sensor.csv') % remake empty csv file
 
 for part=1:19
     force_sensor = zeros(19,3000000);
@@ -98,8 +98,8 @@ for part=1:19
                     end
                     if i ~= length(contact_shift) %prevent out of bound index
                         if contact_shift(i+1) == 0
-                            mean_last_bounce = mean(force_model(start_contact:i,1));
-                            temp_array = arrayfun(@(m) {abs(mean_last_bounce-m)/1000}, force_model(start_contact:i));
+                            mean_last_bounce = mean(force_sensor(start_contact:i,1));
+                            temp_array = arrayfun(@(m) {abs(mean_last_bounce-m)/1000}, force_sensor(start_contact:i));
                             if bounce_cond == 0
                                 diff.raw(part, ncontacts.raw)=sum(vertcat(temp_array{:}));
                             elseif bounce_cond == 2

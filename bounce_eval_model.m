@@ -6,7 +6,7 @@ diff.raw = [];
 diff.av = [];
 diff.low = [];
 diff.sc = [];
-writematrix([],'dist_from_mean.csv') % remake empty csv file
+writematrix([],'dist_from_mean_model.csv') % remake empty csv file
 
 for part=1:19
     force_sensor = zeros(19,3000000);
@@ -99,7 +99,7 @@ for part=1:19
                     if i ~= length(contact_shift) %prevent out of bound index
                         if contact_shift(i+1) == 0
                             mean_last_bounce = mean(force_sensor(start_contact:i,1));
-                            temp_array = arrayfun(@(m) {abs(mean_last_bounce-m)/1000}, force_sensor(start_contact:i));
+                            temp_array = arrayfun(@(m) {abs(mean_last_bounce-m)/1000}, force_mod(start_contact:i));
                             if bounce_cond == 0
                                 diff.raw(part, ncontacts.raw)=sum(vertcat(temp_array{:}));
                             elseif bounce_cond == 2
@@ -145,22 +145,22 @@ for part=1:19
     b_raw = diff.raw(part,:);
     b_raw = b_raw(b_raw ~=0);
     for o = b_raw
-        writematrix([part, o, 0], 'dist_from_mean.csv','WriteMode','append')
+        writematrix([part, o, 0], 'dist_from_mean_model.csv','WriteMode','append')
     end
     b_av = diff.av(part,:);
     b_av = b_av(b_av ~=0);
     for o = b_av
-        writematrix([part, o, 1], 'dist_from_mean.csv','WriteMode','append')
+        writematrix([part, o, 1], 'dist_from_mean_model.csv','WriteMode','append')
     end
     b_low = diff.low(part,:);
     b_low = b_low(b_low ~=0);
     for o = b_low
-        writematrix([part, o, 2], 'dist_from_mean.csv','WriteMode','append')
+        writematrix([part, o, 2], 'dist_from_mean_model.csv','WriteMode','append')
     end
     b_sc = diff.sc(part,:);
     b_sc = b_sc(b_sc ~=0);
     for o = b_sc
-        writematrix([part, o, 3], 'dist_from_mean.csv','WriteMode','append')
+        writematrix([part, o, 3], 'dist_from_mean_model.csv','WriteMode','append')
     end
 
     boxplot([b_raw, ...
@@ -171,7 +171,7 @@ for part=1:19
                 ones(1,ncontacts.av)*1, ...
                 ones(1,ncontacts.low)*2, ...
                 ones(1,ncontacts.sc)*3])
-    saveas(gcf, strcat("C:\\Users\\admin\\pacof\\data\\matlab_figures\\boxplot_distance_from_mean_part_", string(part),".pdf"))
+    saveas(gcf, strcat("C:\\Users\\admin\\pacof\\data\\matlab_figures\\boxplot_distance_from_mean_model_part_", string(part),".pdf"))
 end
 
 %% plots
