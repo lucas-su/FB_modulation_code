@@ -21,7 +21,7 @@ for part=1:19
     
     
     A = importdata(strcat('C:\Users\admin\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data.txt'));
-    if i == 10 || i == 17 || i ==  19
+    if part == 10 || part == 17 || part ==  19
         A2 = importdata(strcat('C:\Users\admin\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data_2.txt'));
     %         A = A_(A_(:,4) ~= 0,:);
     else 
