@@ -1,4 +1,4 @@
-for part=1:19
+for part=9
     force_sensor = zeros(19,3000000);
     force_mod = zeros(19,3000000);
     STI = zeros(19,3000000);
@@ -41,8 +41,11 @@ for part=1:19
 %     contact_shift = vertcat(contact_shift{:});
     figure 
     hold on
-    plot(t, force_condition)
-    plot(t, force_mod)
+    grid on 
+    plot(t, force_sensor, 'LineWidth',1)
+    xlabel('Time (s)') 
+    ylabel('Force (N)') 
+    plot(t, force_mod, 'LineWidth',1)
 end
 
 function y = return_contact(x)

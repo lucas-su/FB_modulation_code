@@ -61,54 +61,140 @@ ggplot(coefs_norm_tot__RANDel_RANCondition_cond, aes(labels_, center)) +        
 ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ToT_RANDel_RANCondition_cond.pdf")
 
 
+
+###############
+tot__RANDel_RANCondition_RANParticipant <-  brm(tot_norm ~ (1|delay) +(1|condition) +(1|participant),
+                                 data = data,
+                                 family=exgaussian(),
+                                 control = list(adapt_delta = 0.99))
+
+coefs_tot__RANDel_RANCondition_RANParticipant = coef(posterior(tot__RANDel_RANCondition_RANParticipant), interval=0.9)
+coefs_tot__RANDel_RANCondition_RANParticipant
+
+coefs_norm_tot__RANDel_RANCondition_RANParticipant_del <- 
+  slice(dplyr::select(coefs_tot__RANDel_RANCondition_RANParticipant, center, lower, upper), 6:9)+23.16 #(dplyr::select(coefs,center),1)
+
+coefs_norm_tot__RANDel_RANCondition_RANParticipant_del$labels_ = c("0ms", "150ms", "300ms", "black")
+
+ggplot(coefs_norm_tot__RANDel_RANCondition_RANParticipant_del, aes(labels_, center)) +        # ggplot2 plot with confidence intervals
+  geom_point() +
+  scale_x_discrete("Delay condition",limits=coefs_norm_tot__RANDel_RANCondition_RANParticipant_del$labels_)+
+  scale_y_continuous("Time on Task")+  
+  geom_errorbar(aes(ymin = lower, ymax = upper))
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ToT_RANDel_RANCondition_RANParticipant_del_small.pdf", 
+       width = 2.8, height = 1.9, units = "in")
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ToT_RANDel_RANCondition_RANParticipant_del_large.pdf",
+       width = 4.9, height = 3.3, units = "in")
+
+coefs_norm_tot__RANDel_RANCondition_RANParticipant_cond <- 
+  slice(dplyr::select(coefs_tot__RANDel_RANCondition_RANParticipant, center, lower, upper), 2:5)+ 23.26 #(dplyr::select(coefs,center),1)
+
+coefs_norm_tot__RANDel_RANCondition_RANParticipant_cond$labels_ = c("raw", "average", "low pass", "scale")
+
+ggplot(coefs_norm_tot__RANDel_RANCondition_RANParticipant_cond, aes(labels_, center)) +        # ggplot2 plot with confidence intervals
+  geom_point() +
+  scale_x_discrete("Condition",limits=coefs_norm_tot__RANDel_RANCondition_RANParticipant_cond$labels_)+
+  scale_y_continuous("Time on Task")+  
+  geom_errorbar(aes(ymin = lower, ymax = upper))
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ToT_RANDel_RANCondition_RANParticipant_cond_small.pdf",
+       width = 2.8, height = 1.9, units = "in")
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ToT_RANDel_RANCondition_RANParticipant_cond_large.pdf",
+       width = 4.9, height = 3.3, units = "in")
+
+
+coefs_norm_tot__RANDel_RANCondition_RANParticipant_part <- 
+  slice(dplyr::select(coefs_tot__RANDel_RANCondition_RANParticipant, center, lower, upper), 10:28)+ 23.26 #(dplyr::select(coefs,center),1)
+
+coefs_norm_tot__RANDel_RANCondition_RANParticipant_part$labels_ = as.character(c(3:21))
+
+ggplot(coefs_norm_tot__RANDel_RANCondition_RANParticipant_part, aes(labels_, center)) +        # ggplot2 plot with confidence intervals
+  geom_point() +
+  scale_x_discrete("Participant",limits=coefs_norm_tot__RANDel_RANCondition_RANParticipant_part$labels_)+
+  scale_y_continuous("Time on Task")+  
+  geom_errorbar(aes(ymin = lower, ymax = upper))
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ToT_RANDel_RANCondition_RANParticipant_part_small.pdf",
+       width = 2.8, height = 1.9, units = "in")
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ToT_RANDel_RANCondition_RANParticipant_part_large.pdf",
+       width = 4.9, height = 3.3, units = "in")
+
       #####################
       ###               ###
       ###   ncontacts   ###
       ###               ###
       #####################
 
-ncontacts__RANDel_RANCondition <-  brm(ncontacts ~ (1|delay) +(1|condition),
+ncontacts__RANDel_RANCondition_RANParticipant <-  brm(ncontacts ~ 1 + (1|delay) +(1|condition) + (1|participant),
                                  data = data,
                                  family=poisson(),
                                  control = list(adapt_delta = 0.99))
 
-coefs_ncontacts__RANDel_RANCondition = coef(posterior(ncontacts__RANDel_RANCondition), interval=0.9)
-coefs_ncontacts__RANDel_RANCondition
+coefs_ncontacts__RANDel_RANCondition_RANParticipant = coef(posterior(ncontacts__RANDel_RANCondition_RANParticipant), interval=0.9, mean.func = exp )
+coefs_ncontacts__RANDel_RANCondition_RANParticipant
 
-coefs_norm_ncontacts__RANDel_RANCondition_del <- 
-  slice(dplyr::select(coefs_ncontacts__RANDel_RANCondition, center, lower, upper), 6:9)+1.84 #(dplyr::select(coefs,center),1)
+coefs_norm_ncontacts__RANDel_RANCondition_RANParticipant_del <- 
+  slice(dplyr::select(coefs_ncontacts__RANDel_RANCondition_RANParticipant, center, lower, upper), 6:9)+5.3 #(dplyr::select(coefs,center),1)
 
-#coefs_norm_tot__RANDel_RANCondition_del <- 
-#  slice(dplyr::select(coefs_tot__RANDel_RANCondition_del, center, lower, upper), 2:5)+ 24.08 #(dplyr::select(coefs,center),1)
+coefs_norm_ncontacts__RANDel_RANCondition_RANParticipant_del$labels_ = c("0ms", "150ms", "300ms", "black")
 
-coefs_norm_ncontacts__RANDel_RANCondition_del$labels_ = c("0ms", "150ms", "300ms", "black")
-
-ggplot(coefs_norm_ncontacts__RANDel_RANCondition_del, aes(labels_, center)) +        # ggplot2 plot with confidence intervals
+ggplot(coefs_norm_ncontacts__RANDel_RANCondition_RANParticipant_del, aes(labels_, center)) +        # ggplot2 plot with confidence intervals
   geom_point() +
-  scale_x_discrete("Condition",limits=coefs_norm_ncontacts__RANDel_RANCondition_del$labels_)+
+  scale_x_discrete("Delay condition",limits=coefs_norm_ncontacts__RANDel_RANCondition_RANParticipant_del$labels_)+
   scale_y_continuous("Number of contacts")+  
   geom_errorbar(aes(ymin = lower, ymax = upper))
-ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ncontacts__RANDel_RANCondition.pdf")
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ncontacts_RANDel_RANCondition_RANParticipant_del_poisson_small.pdf",
+       width = 2.8, height = 1.9, units = "in")
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ncontacts_RANDel_RANCondition_RANParticipant_del_poisson_large.pdf",
+       width = 4.9, height = 3.3, units = "in")
 
 
 
+coefs_ncontacts__RANDel_RANCondition_RANParticipant
 
-coefs_norm_nconctacts__RANDel_RANCondition_cond <- 
-  slice(dplyr::select(coefs_ncontacts__RANDel_RANCondition, center, lower, upper), 2:5)+ 1.84 #(dplyr::select(coefs,center),1)
+coefs_norm_nconctacts__RANDel_RANCondition_RANParticipant_cond <- 
+  slice(dplyr::select(coefs_ncontacts__RANDel_RANCondition_RANParticipant, center, lower, upper), 2:5)+ 5.3 #(dplyr::select(coefs,center),1)
 
-coefs_norm_nconctacts__RANDel_RANCondition_cond$labels_ = c("raw", "average", "low pass", "scale")
+coefs_norm_nconctacts__RANDel_RANCondition_RANParticipant_cond$labels_ = c("raw", "average", "low pass", "scale")
 
-ggplot(coefs_norm_nconctacts__RANDel_RANCondition_cond, aes(labels_, center)) +        # ggplot2 plot with confidence intervals
+coefs_norm_nconctacts__RANDel_RANCondition_RANParticipant_cond
+
+
+ggplot(coefs_norm_nconctacts__RANDel_RANCondition_RANParticipant_cond, aes(labels_, center)) +        # ggplot2 plot with confidence intervals
   geom_point() +
-  scale_x_discrete("Condition",limits=coefs_norm_nconctacts__RANDel_RANCondition_cond$labels_)+
+  scale_x_discrete("Condition",limits=coefs_norm_nconctacts__RANDel_RANCondition_RANParticipant_cond$labels_)+
   scale_y_continuous("Number of contacts")+  
   geom_errorbar(aes(ymin = lower, ymax = upper))
-ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ToT_RANDel_RANCondition_cond.pdf")
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ncontacts_RANDel_RANCondition_RANParticipant_cond_poisson_small.pdf",
+       width = 2.8, height = 1.9, units = "in")
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ncontacts_RANDel_RANCondition_RANParticipant_cond_poisson_large.pdf",
+       width = 4.9, height = 3.3, units = "in")
+
+
+
+coefs_norm_nconctacts__RANDel_RANCondition_RANParticipant_part <- 
+  slice(dplyr::select(coefs_ncontacts__RANDel_RANCondition_RANParticipant, center, lower, upper), 10:28)+ 5.3 #(dplyr::select(coefs,center),1)
+
+coefs_norm_nconctacts__RANDel_RANCondition_RANParticipant_part$labels_ = as.character(c(3:21))
+
+coefs_norm_nconctacts__RANDel_RANCondition_RANParticipant_part
+
+
+ggplot(coefs_norm_nconctacts__RANDel_RANCondition_RANParticipant_part, aes(labels_, center)) +        # ggplot2 plot with confidence intervals
+  geom_point() +
+  scale_x_discrete("Condition",limits=coefs_norm_nconctacts__RANDel_RANCondition_RANParticipant_part$labels_)+
+  scale_y_continuous("Number of contacts")+  
+  geom_errorbar(aes(ymin = lower, ymax = upper))
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ncontacts_RANDel_RANCondition_RANParticipant_part_poisson_small.pdf",
+       width = 2.8, height = 1.9, units = "in")
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ncontacts_RANDel_RANCondition_RANParticipant_part_poisson_large.pdf",
+       width = 4.9, height = 3.3, units = "in")
+
+
+
 
 
 ###################
 
-ncontacts__RANDel_RANCondition <-  brm(ncontacts ~ (1|delay) +(1|condition),
+ncontacts__RANDel_RANCondition <-  brm(ncontacts ~ (1|condition),
                                        data = data,
                                        family=exgaussian(),
                                        control = list(adapt_delta = 0.99))
@@ -117,10 +203,7 @@ coefs_ncontacts__RANDel_RANCondition = coef(posterior(ncontacts__RANDel_RANCondi
 coefs_ncontacts__RANDel_RANCondition
 
 coefs_norm_ncontacts__RANDel_RANCondition_del <- 
-  slice(dplyr::select(coefs_ncontacts__RANDel_RANCondition, center, lower, upper), 6:9)+2.03 #(dplyr::select(coefs,center),1)
-
-#coefs_norm_tot__RANDel_RANCondition_del <- 
-#  slice(dplyr::select(coefs_tot__RANDel_RANCondition_del, center, lower, upper), 2:5)+ 24.08 #(dplyr::select(coefs,center),1)
+  slice(dplyr::select(coefs_ncontacts__RANDel_RANCondition, center, lower, upper), 2:5)+5.5 #(dplyr::select(coefs,center),1)
 
 coefs_norm_ncontacts__RANDel_RANCondition_del$labels_ = c("0ms", "150ms", "300ms", "black")
 
@@ -129,13 +212,13 @@ ggplot(coefs_norm_ncontacts__RANDel_RANCondition_del, aes(labels_, center)) +   
   scale_x_discrete("Condition",limits=coefs_norm_ncontacts__RANDel_RANCondition_del$labels_)+
   scale_y_continuous("Number of contacts")+  
   geom_errorbar(aes(ymin = lower, ymax = upper))
-ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ncontacts__RANDel_RANCondition.pdf")
+ggsave("C:\\Users\\admin\\pacof\\data\\FB_modulation_code\\ncontacts__RANDel.pdf")
 
 
 
 
 coefs_norm_nconctacts__RANDel_RANCondition_cond <- 
-  slice(dplyr::select(coefs_ncontacts__RANDel_RANCondition, center, lower, upper), 2:5)+ 1.84 #(dplyr::select(coefs,center),1)
+  slice(dplyr::select(coefs_ncontacts__RANDel_RANCondition, center, lower, upper), 2:5)+ 5.5 #(dplyr::select(coefs,center),1)
 
 coefs_norm_nconctacts__RANDel_RANCondition_cond$labels_ = c("raw", "average", "low pass", "scale")
 

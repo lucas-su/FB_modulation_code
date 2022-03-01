@@ -12,6 +12,11 @@ del.av = [];
 del.low = [];
 del.sc = [];
 
+force.raw = [];
+force.av = [];
+force.low = [];
+force.sc = [];
+
 writematrix([],'temp_dist_from_mean_model.csv') % remake empty csv file
 
 delaytimes = importdata('C:\Users\admin\pacof\data\FB_modulation_code\delay times.csv');
@@ -114,15 +119,19 @@ for part=1:19
                             if bounce_cond == 0
                                 diff.raw(part, ncontacts.raw)=sum(vertcat(temp_array{:}));
                                 del.raw(part,ncontacts.raw) = return_del(delaytimes(part,:),i-1,part);
+                                force.raw(part,ncontacts.raw) = mean_last_bounce;
                             elseif bounce_cond == 2
                                 diff.av(part, ncontacts.av)=sum(vertcat(temp_array{:}));
                                 del.av(part,ncontacts.av) = return_del(delaytimes(part,:),i-1,part);
+                                force.av(part,ncontacts.av) = mean_last_bounce;
                             elseif bounce_cond == 3
                                 diff.low(part, ncontacts.low)=sum(vertcat(temp_array{:}));
                                 del.low(part,ncontacts.low) = return_del(delaytimes(part,:),i-1,part);
+                                force.low(part,ncontacts.low) = mean_last_bounce;
                             elseif bounce_cond == 4
                                 diff.sc(part, ncontacts.sc)=sum(vertcat(temp_array{:}));
                                 del.sc(part,ncontacts.sc) = return_del(delaytimes(part,:),i-1,part);
+                                force.sc(part,ncontacts.sc) = mean_last_bounce;
                             end
                         end
                     end
@@ -137,18 +146,22 @@ for part=1:19
                 if bounce_cond == 0
                         diff.raw(part, ncontacts.raw) = 0;
                         del.raw(part, ncontacts.raw) = 5;
+                        force.raw(part,ncontacts.raw) = 0;
                         ncontacts.raw = ncontacts.raw - 1;
                     elseif bounce_cond == 2
                         diff.av(part, ncontacts.av) = 0;
                         del.av(part, ncontacts.av) = 5;
+                        force.av(part,ncontacts.av) = 0;
                         ncontacts.av = ncontacts.av - 1;
                     elseif bounce_cond == 3
                         diff.low(part, ncontacts.low) = 0;
                         del.low(part, ncontacts.low) = 5;
+                        force.low(part,ncontacts.low) = 0;
                         ncontacts.low = ncontacts.low - 1;
                     elseif bounce_cond == 4
                         diff.sc(part, ncontacts.sc) = 0;
                         del.sc(part, ncontacts.sc) = 5;
+                        force.sc(part,ncontacts.sc) = 0;
                         ncontacts.sc = ncontacts.sc - 1;
                 end
             end
@@ -164,44 +177,52 @@ for part=1:19
     d_raw = del.raw(part,:);
     d_raw = d_raw(d_raw ~=0);
     d_raw = d_raw(d_raw ~=5);
+    f_raw = force.raw(part,:);
+    f_raw = f_raw(f_raw ~=0);
     disp('b_raw, d_raw');
     disp(length(b_raw));
     disp(length(d_raw));
     for o = 1:length(b_raw)
-        writematrix([part, b_raw(o), 0, d_raw(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
+        writematrix([part, b_raw(o), 0, d_raw(o), f_raw(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
     end
     b_av = diff.av(part,:);
     b_av = b_av(b_av ~=0);
     d_av = del.av(part,:);
     d_av = d_av(d_av ~=0);
     d_av = d_av(d_av ~=5);
+    f_av = force.av(part,:);
+    f_av = f_av(f_av ~=0);
     disp('b_av, d_av');
     disp(length(b_av));
     disp(length(d_av));
     for o = 1:length(b_av)
-        writematrix([part, b_av(o), 1, d_av(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
+        writematrix([part, b_av(o), 1, d_av(o), f_av(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
     end
     b_low = diff.low(part,:);
     b_low = b_low(b_low ~=0);
     d_low = del.low(part,:);
     d_low = d_low(d_low ~=0);
     d_low = d_low(d_low ~=5);
+    f_low = force.low(part,:);
+    f_low = f_low(f_low ~=0);
     disp('b_low, d_low');
     disp(length(b_low));
     disp(length(d_low));
     for o = 1:length(b_low)
-        writematrix([part, b_low(o), 2,d_low(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
+        writematrix([part, b_low(o), 2,d_low(o), f_low(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
     end
     b_sc = diff.sc(part,:);
     b_sc = b_sc(b_sc ~=0);
     d_sc = del.sc(part,:);
     d_sc = d_sc(d_sc ~=0);
     d_sc = d_sc(d_sc ~=5);
+    f_sc = force.sc(part,:);
+    f_sc = f_sc(f_sc ~=0);
     disp('b_sc, d_sc');
     disp(length(b_sc));
     disp(length(d_sc));
     for o = 1:length(b_sc)
-        writematrix([part, b_sc(o), 3,d_sc(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
+        writematrix([part, b_sc(o), 3,d_sc(o), f_sc(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
     end
 
     boxplot([b_raw, ...
