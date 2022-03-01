@@ -1,4 +1,4 @@
-for part=9
+for part=14
     force_sensor = zeros(19,3000000);
     force_mod = zeros(19,3000000);
     STI = zeros(19,3000000);
