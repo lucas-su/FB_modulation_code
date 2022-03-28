@@ -30,9 +30,9 @@ hard_soft_time = [504000, 880000; ...
 
 
 for part = 1:19
-    A = importdata(strcat('C:\Users\admin\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data.txt'));
+    A = importdata(strcat('C:\Users\user\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data.txt'));
     if part == 10 || part == 17 || part ==  19
-        A2 = importdata(strcat('C:\Users\admin\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data_2.txt'));
+        A2 = importdata(strcat('C:\Users\user\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data_2.txt'));
     else 
         A2 = zeros(size(A));
     end
@@ -239,7 +239,7 @@ for part = 1:19
     plot(t,force_sensor)
     plot(t,contact_shift)
     plot(t,force_condition)
-    saveas(gcf, strcat("C:\Users\admin\pacof\data\matlab_figures\force_sensor_contact_condition_participant_", string(part), ".fig"))
+    saveas(gcf, strcat("C:\Users\user\pacof\data\matlab_figures\force_sensor_contact_condition_participant_", string(part), ".fig"))
 
 
     %% write to csv
