@@ -1,15 +1,9 @@
-clear all
-close all
-clc
-
 %% import and plot data
 
-A_ = importdata('/home/luc/Desktop/omega_calibrate_data.txt');
+A_ = importdata('/home/luc/calibrate_data/omega_calibrate_data.txt');
 A = A_(30:end,:);
-% A = A_(30:end/2,:);
-f_ = importdata('/home/luc/Desktop/omega_calibrate_forcedata.txt');
+f_ = importdata('/home/luc/calibrate_data/omega_calibrate_forcedata.txt');
 f = f_(30:end);
-% f = f_(30:end/2);
 n = length(A);
 Tc = 1/1000;
 t = 0:Tc:n*Tc;
@@ -54,16 +48,8 @@ plot(t,f)
 hold on
 grid on
 plot(t,est_f)
-% plot(t,est_f1)
 plot(t,est_f2)
 legend("f","est f","est f2")
-% subplot(2,1,2)
-% plot(t,b)
-% hold on
-% grid on
-% plot(t,b1)
-% hold on
-% plot(t,b2)
 subplot(2,1,2)
 plot(t,A(:,2))
 legend("dx")

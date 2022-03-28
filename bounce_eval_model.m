@@ -17,10 +17,10 @@ force.av = [];
 force.low = [];
 force.sc = [];
 
-writematrix([],'temp_dist_from_mean_model.csv') % remake empty csv file
+writematrix([],'dist_from_mean_model.csv') % remake empty csv file
 
 
-delaytimes = importdata('C:\Users\admin\pacof\data\FB_modulation_code\delay times.csv');
+delaytimes = importdata('C:\Users\user\pacof\data\FB_modulation_code\delay times.csv');
 delaytimes = delaytimes.data;
 for part=1:19
     disp('part')
@@ -37,10 +37,9 @@ for part=1:19
     
     
     
-    A = importdata(strcat('C:\Users\admin\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data.txt'));
+    A = importdata(strcat('C:\Users\user\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data.txt'));
     if part == 10 || part == 17 || part ==  19
-        A2 = importdata(strcat('C:\Users\admin\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data_2.txt'));
-    %         A = A_(A_(:,4) ~= 0,:);
+        A2 = importdata(strcat('C:\Users\user\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data_2.txt'));
     else 
         A2 = zeros(size(A));
     end
@@ -184,7 +183,7 @@ for part=1:19
     disp(length(b_raw));
     disp(length(d_raw));
     for o = 1:length(b_raw)
-        writematrix([part, b_raw(o), 0, d_raw(o), f_raw(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
+        writematrix([part, b_raw(o), 0, d_raw(o), f_raw(o)], 'dist_from_mean_model.csv','WriteMode','append')
     end
     b_av = diff.av(part,:);
     b_av = b_av(b_av ~=0);
@@ -197,7 +196,7 @@ for part=1:19
     disp(length(b_av));
     disp(length(d_av));
     for o = 1:length(b_av)
-        writematrix([part, b_av(o), 1, d_av(o), f_av(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
+        writematrix([part, b_av(o), 1, d_av(o), f_av(o)], 'dist_from_mean_model.csv','WriteMode','append')
     end
     b_low = diff.low(part,:);
     b_low = b_low(b_low ~=0);
@@ -210,7 +209,7 @@ for part=1:19
     disp(length(b_low));
     disp(length(d_low));
     for o = 1:length(b_low)
-        writematrix([part, b_low(o), 2,d_low(o), f_low(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
+        writematrix([part, b_low(o), 2,d_low(o), f_low(o)], 'dist_from_mean_model.csv','WriteMode','append')
     end
     b_sc = diff.sc(part,:);
     b_sc = b_sc(b_sc ~=0);
@@ -223,7 +222,7 @@ for part=1:19
     disp(length(b_sc));
     disp(length(d_sc));
     for o = 1:length(b_sc)
-        writematrix([part, b_sc(o), 3,d_sc(o), f_sc(o)], 'temp_dist_from_mean_model.csv','WriteMode','append')
+        writematrix([part, b_sc(o), 3,d_sc(o), f_sc(o)], 'dist_from_mean_model.csv','WriteMode','append')
     end
 
     boxplot([b_raw, ...
@@ -234,19 +233,8 @@ for part=1:19
                 ones(1,ncontacts.av)*1, ...
                 ones(1,ncontacts.low)*2, ...
                 ones(1,ncontacts.sc)*3])
-    saveas(gcf, strcat("C:\\Users\\admin\\pacof\\data\\matlab_figures\\temp_boxplot_distance_from_mean_model_part_", string(part),".pdf"))
+    saveas(gcf, strcat("C:\\Users\\user\\pacof\\data\\matlab_figures\\boxplot_distance_from_mean_model_part_", string(part),".pdf"))
 end
-
-%% plotsforce_mod
-% figure 
-% hold on
-% plot(t, contact_shift)
-% plot(t, force_sensor)
-
-%% export
-
-
-
 
 
 %%

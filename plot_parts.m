@@ -1,4 +1,4 @@
-for part=14
+for part=1:19
     force_sensor = zeros(19,3000000);
     force_mod = zeros(19,3000000);
     STI = zeros(19,3000000);
@@ -10,9 +10,9 @@ for part=14
     recovered_last_contact = zeros(19,3000000);
     
     
-    A = importdata(strcat('C:\Users\admin\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data.txt'));
+    A = importdata(strcat('C:\Users\user\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data.txt'));
     if part == 10 || part == 17 || part ==  19
-        A2 = importdata(strcat('C:\Users\admin\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data_2.txt'));
+        A2 = importdata(strcat('C:\Users\user\pacof\data\data\participant',{' '},string(part+2),'\feedback_modulation_data_2.txt'));
     %         A = A_(A_(:,4) ~= 0,:);
     else 
         A2 = zeros(size(A));
@@ -28,17 +28,17 @@ for part=14
     
     force_sensor = A(:,1);
     force_mod = A(:,2);
-%     STI = A(:,3);
+    STI = A(:,3);
     force_condition = A(:,4);
-%     contact = A(:,5);
-%     count = A(:,6);
-%     cutoff_freq = A(:,7);
-%     target_hard_soft = A(:,8);
-%     recovered_last_contact = A(:,9);
+    contact = A(:,5);
+    count = A(:,6);
+    cutoff_freq = A(:,7);
+    target_hard_soft = A(:,8);
+    recovered_last_contact = A(:,9);
     
     % remap contact to threshold == 1 N
-%     contact_shift = arrayfun(@(t){return_contact(t)}, force_sensor);
-%     contact_shift = vertcat(contact_shift{:});
+    contact_shift = arrayfun(@(t){return_contact(t)}, force_sensor);
+    contact_shift = vertcat(contact_shift{:});
     figure 
     hold on
     grid on 
